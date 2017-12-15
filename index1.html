@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<script src="E:\work\A1.5JS\app\lib\angular.min.js"></script>
+<script src="E:\work\A1.5JS\app\lib\angular-route.min.js"></script>
+<body>
+<div ng-app="myApp" ng-controller = "firstDivCntrl" >
+
+    <div ng-controller = "secountDivCntrl">
+        data [ {{secondData}} ]
+    </div>
+    <div ng-controller = "thirdDivCntrl"></div>
+    <fourth-directive></fourth-directive>
+</div>
+
+
+</body>
+<script>
+    var myApp = angular.module('myApp',[]);
+    myApp.controller('firstDivCntrl',function ($scope,$rootScope,$timeout) {
+        /*$scope.$on('firingEmit', function (event, data) {
+            console.log(' Parent '+data);
+        });*/
+        $timeout(function(){$rootScope.$broadcast("broadCast", {
+            someProp: 'Sending you an Object!' // send whatever you want
+        })},100);
+
+
+    });
+    myApp.directive('fourthDirective',function(){
+        return {
+            restrict: 'E',
+            template: "<h1>I made a directive!</h1>"
+        };
+        }
+    );
+
+    myApp.controller('secountDivCntrl',function ($scope) {
+       /* $scope.$on('firingEmit', function (event, data) {
+            console.log('secound 1'+data); // 'Data to send'
+        });*/
+        $scope.$on("broadCast", function (event, data) {
+            console.log('broadCast child 2'+data); // 'Data to send'
+            $scope.secondData = data;
+        });
+    });
+
+    myApp.controller('thirdDivCntrl',function ($scope,$rootScope) {
+        /*$scope.$emit("firingEmit",'data send');*/
+        $scope.$on("broadCast", function (event, data) {
+            console.log('broadCast child 3'+data); // 'Data to send'
+            console.log(angular.fromJson(data));
+            console.log(angular.toJson(data));
+            console.log(data);
+        });
+    });
+
+    /* otherway to broadcast through emit from child
+    .controller('ParentCtrl', ['$scope', function($scope) {
+    $scope.$on('initiateEvent', function(event, b) {
+        $scope.$broadcast('someEvent', 'bidule');
+    }
+    }])
+    .controller('ChildCtrl', ['$scope', function($scope) {
+    $scope.$on('someEvent', function(event, b) {
+        $scope.content = b;
+    });
+    $scope.$emit('initiateEvent', null);
+    }])*/
+
+</script>
+</html>
