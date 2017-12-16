@@ -1,0 +1,17 @@
+[
+  {
+    "name": "SG",
+    "isExist": "Y",
+    "count": "3000"
+  },
+  {
+    "name": "WB",
+    "isExist": "N",
+    "count": "6000"
+  },
+  {
+    "name": "MS",
+    "isExist": "Y",
+    "count": "2000"
+  }
+]
